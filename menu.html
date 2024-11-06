@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    * {
+        box-sizing: border-box; /* Include padding and border in element's total width and height */
+    }
+
+    body, html {
+        height: 100%; /* Ensure the body and HTML take full height */
+        margin: 0; /* Remove default margin */
+        display: flex;
+        flex-direction: column; /* Stack content vertically */
+        background-color: #FAF7F0 !important;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #8DECB4 !important; /* Replace with your desired color */
+    }
+
+    .navbar-nav .nav-link.active {
+        color: #059212 !important; /* Active link color */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column; /* Stack card elements vertically */
+        height: 100%; /* Ensure cards are full height of the column */
+    }
+
+    .card-body {
+        flex-grow: 1; /* Allow card body to grow and take available space */
+    }
+
+    .rent nav ul {
+        display: flex; /* Use flexbox to align items in a row */
+        padding: 0; /* Remove default padding */
+        margin: 0;
+        justify-content: center;
+    }
+
+    .rent nav ul li {
+        list-style: none;
+        margin: 0 15px; /* Space between items */
+        position: relative; /* Make the li position relative for absolute children */
+    }
+
+    .nav-item {
+        transition: transform 0.3s; /* Smooth transition for the scaling effect */
+    }
+
+    .nav-item:hover {
+        transform: scale(1.05); /* Slightly increase size on hover */
+    }
+
+    .navim {
+        width: 230px;
+        height: 240px; /* Adjusted height for better appearance */
+        object-fit: cover; /* Ensure the image covers the area */
+        border-radius: 10px; /* Optional: rounded corners */
+        transition: transform 0.3s; /* Ensure smooth transition for images */
+    }
+
+    .nav-item {
+        position: relative;
+        display: flex; /* Enable flexbox */
+        justify-content: center; /* Center content horizontally */
+    }
+
+    .nav-item span {
+        position: absolute; /* Position text absolutely */
+        bottom: 10px; /* Adjust this value to move text vertically */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust to center */
+        color: white; /* Text color */
+        font-size: 16px; /* Text size */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional shadow for visibility */
+    }
+
+    /* Sticky footer styles */
+    .content {
+        flex: 1; /* Allow the content to grow and take available space */
+    }
+
+    .footer {
+        background-color: #343a40; /* Dark background */
+        color: #ffffff; /* Light text color */
+        padding: 20px; /* Padding for footer */
+        text-align: center; /* Center text */
+    }
+
+    h3 {
+        text-align: center; /* Center heading */
+    }
+    .profile-button {
+        position: absolute;
+        top: 25px; /* Adjust vertical position */
+        right: 15px; /* Adjust horizontal position */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #4DAE88;
+        color: white;
+        border: none;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-button:hover {
+        background-color: #2C7865;
+    }
+
+    .footer {
+        position: fixed; /* Fix the footer to the bottom */
+        left: 0; /* Align it to the left */
+        right: 0; /* Align it to the right */
+        bottom: 0; /* Position it at the bottom */
+        background-color: #343a40; /* Background color */
+        color: white; /* Text color */
+        text-align: center; /* Center text */
+        padding: 15px 0; /* Padding for spacing */
+    }
+
+    /* Chat icon style */
+    .chat-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #4DAE88;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    .chat-icon:hover {
+        background-color: #2C7865;
+    }
+
+    /* Chat window style */
+    .chat-window {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+        flex-direction: column;
+    }
+
+    .chat-header {
+        background-color: #4DAE88;
+        color: white;
+        padding: 10px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .chat-body {
+        padding: 10px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .chat-footer {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-footer input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .chat-footer button {
+        margin-left: 10px;
+        padding: 8px;
+        background-color: #4DAE88;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .chat-footer button:hover {
+        background-color: #2C7865;
+    }
+
+    .user-message {
+        text-align: right;
+        background-color: #e0ffe6;
+        padding: 8px;
+        border-radius: 5px;
+        margin: 5px 0;
+    }
+
+    .bot-message {
+        text-align: left;
+        background-color: #f0f0f0;
+        padding: 8px;
+        border-radius: 5px;
+        margin: 5px 0;
+    }
+
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <title>Menu - EcoRent</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="favicon1.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-5" style="">
+    <a href="index.html" class="navbar-brand">
+        <h1 class="m-0 text-primary"><span class="text-dark">EcoRent</span></h1>
+    </a>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav m-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About</a>
+            <a href="menu.html" class="nav-item nav-link active">Menu</a>
+            <a href="my_account.html" class="nav-item nav-link">My Account</a>
+            <a href="contact.html" class="nav-item nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+<!-- Profile Start -->
+<a href="profile.html" class="profile-button">
+    <i class="fas fa-user"></i>
+</a>
+<!-- Profile End -->
+
+<div class="content"> <!-- New div to wrap content -->
+    <!-- Category start-->
+    <div class="rent">
+        <h3 class="text-center mb-6" style="font-size: 40px;">Category</h3>
+        <nav style="margin-top: 20px;"> <!-- Added top margin -->
+            <ul>
+                <li>
+                    <a href="sport.html" class="nav-item">
+                        <img src="https://i.pinimg.com/564x/8b/ba/be/8bbabeb9024b388eba9b1322868ef23c.jpg" class="navim" alt="Sport Image">
+                        <span>Sport</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="kitchen.html">
+                        <div class="nav-item">
+                            <img src="https://i.pinimg.com/564x/54/1e/2a/541e2a2c06ba0a36d7fd35b36b8aabbf.jpg" class="navim" alt="Kitchen Image">
+                            <span>Kitchen</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <div class="nav-item">
+                        <img src="https://i.pinimg.com/564x/66/11/c0/6611c0cb5e193ad71b149e085e344c02.jpg" class="navim" alt="Contact Image">
+                        <span>Camping</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item">
+                        <img src="https://i.pinimg.com/564x/2a/9f/80/2a9f8099a5cafb6b1acf74aa230daf33.jpg" class="navim" alt="Support Image">
+                        <span>Electronics</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="rent">
+        <nav style="margin-top: 20px;"> <!-- Added top margin -->
+            <ul>
+                <li>
+                    <a href="sport.html" class="nav-item">
+                        <img src="https://i.pinimg.com/564x/0e/e9/c7/0ee9c71988cded1613dcfc89ae6c8009.jpg" class="navim" alt="Sport Image">
+                        <span>Furniture</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="kitchen.html">
+                        <div class="nav-item">
+                            <img src="https://i.pinimg.com/564x/4d/6b/cb/4d6bcb9e9e6fdde3d531cbb024fb5455.jpg" class="navim" alt="Kitchen Image">
+                            <span>Medical equipments</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <div class="nav-item">
+                        <img src="https://i.pinimg.com/564x/d6/5c/fa/d65cfa9d0151f02f7577f3446f9621ac.jpg" class="navim" alt="Contact Image">
+                        <span>Gardening</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item">
+                        <img src="https://i.pinimg.com/564x/4a/f1/32/4af1327305284a90e3257b79be52ee74.jpg" class="navim" alt="Support Image">
+                        <span>Clothes</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- Category end -->
+</div>
+
+<!-- Chatbot Icon and Chat Window Start -->
+<div class="chat-icon" onclick="toggleChat()">
+    <i class="fas fa-comment"></i>
+</div>
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>EcoRent Chatbot</span>
+        <button onclick="toggleChat()">X</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <!-- Messages will appear here -->
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="userMessage" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<!-- Chatbot Icon and Chat Window End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="container text-center">
+        <p class="m-0">&copy; EcoRent. All Rights Reserved.</p>
+    </div>
+</div>
+
+<!-- Footer End -->
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // Function to display items from localStorage
+    function displayItems() {
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        const itemList = document.getElementById('item-list');
+
+        // Clear the current item list
+        itemList.innerHTML = '';
+
+        // Iterate over items and create HTML elements to display them
+        items.forEach((item, index) => {
+            const col = document.createElement('div');
+            col.className = 'col-lg-4 mb-4';
+            col.innerHTML = `
+                <div class="card">
+                    <img src="${item.image}" class="card-img-top" alt="${item.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.name}</h5>
+                        <p class="card-text">${item.description}</p>
+                        <p class="card-text"><strong>Price: $${item.price} per day</strong></p>
+                        <p class="card-text"><small>Added by: ${item.user}</small></p>
+                        <a href="chat.html?itemName=${encodeURIComponent(item.name)}&user=${encodeURIComponent(item.user)}" class="btn btn-primary">Rent</a>
+                        <button class="btn btn-danger mt-2" onclick="deleteItem(${index})">Delete</button>
+                    </div>
+                </div>
+            `;
+            itemList.appendChild(col);
+        });
+    }
+
+    // Function to delete an item
+    function deleteItem(index) {
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        items.splice(index, 1); // Remove item at specified index
+        localStorage.setItem('items', JSON.stringify(items)); // Save updated items back to localStorage
+        displayItems(); // Refresh the displayed items
+    }
+
+    // Call the displayItems function on page load
+    displayItems();
+
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const userMessage = document.getElementById('userMessage').value;
+        const chatBody = document.getElementById('chatBody');
+
+        if (userMessage.trim()) {
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'user-message';
+            userMsgDiv.innerText = userMessage;
+            chatBody.appendChild(userMsgDiv);
+
+            // Clear the input
+            document.getElementById('userMessage').value = '';
+
+            // Simulate AI response (replace this with real AI logic if available)
+            setTimeout(() => {
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'bot-message';
+                botMsgDiv.innerText = 'EcoRent бот: Спасибо за ваше сообщение!';
+                chatBody.appendChild(botMsgDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+
+</script>
+
+
+
+</body>
+
+</html>

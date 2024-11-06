@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спорт</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Товары для Спорта</h1>
+<div id="productsList"></div>
+
+<script>
+    // Функция для добавления товара
+    function handleFormSubmit() {
+        const productName = document.getElementById('productName').value;
+        const productInfo = document.getElementById('productInfo').value;
+
+        // Получаем существующие товары из localStorage или создаем новый массив
+        const products = JSON.parse(localStorage.getItem('sport')) || [];
+
+        // Добавляем новый товар в массив
+        products.push({ name: productName, info: productInfo });
+
+        // Сохраняем обновленный массив в localStorage
+        localStorage.setItem('sport', JSON.stringify(products));
+
+        // Обновляем список товаров на странице
+        displayProducts();
+        // Очищаем форму
+        document.getElementById('productForm').reset();
+
+        return false; // Предотвращаем стандартное поведение формы
+    }
+
+    // Функция для отображения товаров
+    function displayProducts() {
+        const products = JSON.parse(localStorage.getItem('sport')) || [];
+        const productsList = document.getElementById('productsList');
+        productsList.innerHTML = ''; // Очищаем текущий список
+
+        products.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product-card';
+            productDiv.textContent = `${product.name}: ${product.info}`;
+            productsList.appendChild(productDiv);
+        });
+    }
+
+    // Отображаем товары при загрузке страницы
+    displayProducts();
+</script>
+</body>
+</html>

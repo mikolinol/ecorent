@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sport - EcoRent</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="ecorent.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #8DECB4 !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: #2C7865 !important; /* Изменен цвет активной ссылки */
+        }
+
+        .rent {
+            padding: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 220px;
+            height: 220px;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border: none;
+            margin: 10px;
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border: none;
+        }
+
+        .card-back {
+            background-color: #f8f9fa;
+            transform: rotateY(180deg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-container:hover .card {
+            transform: rotateY(180deg);
+        }
+
+        .product-name {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background for better visibility */
+            padding: 5px;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 40px;
+        }
+
+        .btn {
+            margin-top: 10px;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            background-color: #55AD9B; /* Изменен цвет кнопки */
+            color: white; /* Цвет текста на кнопке */
+            border:none;
+            outline: none; /* Убирает стандартный фокус */
+        }
+        .btn:hover {
+            margin-top: 10px;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            background-color: #80B9AD; /* Изменен цвет кнопки */
+            color: white; /* Цвет текста на кнопке */
+            border:none;
+        }
+        .btn:active, .btn:focus {
+            background-color: #2C7865; /* Цвет кнопки при клике */
+            outline: none; /* Убирает розовый контур */
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer {
+            margin-top: auto;
+            width: 100%;
+        }
+        /* Chat icon style */
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #4DAE88;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .chat-icon:hover {
+            background-color: #2C7865;
+        }
+
+        /* Chat window style */
+        .chat-window {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #4DAE88;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .chat-body {
+            padding: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .chat-footer button {
+            margin-left: 10px;
+            padding: 8px;
+            background-color: #4DAE88;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chat-footer button:hover {
+            background-color: #2C7865;
+        }
+        .user-message {
+            text-align: right;
+            background-color: #e0ffe6;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light py-3 px-lg-5">
+    <a href="index.html" class="navbar-brand">
+        <h1 class="m-0 text-primary"><span class="text-dark">EcoRent</span></h1>
+    </a>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav m-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About</a>
+            <a href="menu.html" class="nav-item nav-link active">Menu</a>
+            <a href="my_account.html" class="nav-item nav-link">My Account</a>
+            <a href="contact.html" class="nav-item nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<div class="content"> <!-- New div to wrap content -->
+
+    <!-- Sport Category Start -->
+    <div class="rent">
+        <h3 class="text-center mb-6">Sports Equipment</h3>
+        <nav>
+            <ul style="list-style: none; padding: 0; display: flex; justify-content: center;">
+                <li>
+                    <div class="nav-item card-container">
+                        <div class="card">
+                            <div class="card-front">
+                                <img src="https://i.pinimg.com/564x/17/00/45/170045ed2c5d25cd7f394a7e3353b5fd.jpg" alt="Dumbbell Set">
+                                <span class="product-name">Rubber Coated Dumbbell Set - Black</span>
+                            </div>
+                            <div class="card-back">
+                                <h5>Price: $15 per day</h5>
+                                <p><a href="chat.html?itemName=Dumbbell&user=OwnerName" class="btn btn-primary">Chat with Owner</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="nav-item card-container">
+                        <div class="card">
+                            <div class="card-front">
+                                <img src="https://i.pinimg.com/564x/c6/53/9e/c6539e2416b58f70865e29a853309a04.jpg" alt="Kayak">
+                                <span class="product-name">Kayak</span>
+                            </div>
+                            <div class="card-back">
+                                <h5>Price: $20 per day</h5>
+                                <p><a href="chat.html?itemName=Kayak&user=OwnerName" class="btn btn-primary">Chat with Owner</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="nav-item card-container">
+                        <div class="card">
+                            <div class="card-front">
+                                <img src="https://i.pinimg.com/564x/80/82/9e/80829eafc2d88ff77df0b3dddf42ca0d.jpg" alt="Tennis Set">
+                                <span class="product-name">Tennis Ball and Racket Set</span>
+                            </div>
+                            <div class="card-back">
+                                <h5>Price: $10 per day</h5>
+                                <p><a href="chat.html?itemName=TennisSet&user=OwnerName" class="btn btn-primary">Chat with Owner</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Add more cards as needed -->
+
+            </ul>
+        </nav>
+    </div>
+    <!-- Sport Category End -->
+</div>
+<!-- Chatbot Icon and Chat Window Start -->
+<div class="chat-icon" onclick="toggleChat()">
+    <i class="fas fa-comment"></i>
+</div>
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>EcoRent Chatbot</span>
+        <button onclick="toggleChat()">X</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <!-- Messages will appear here -->
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="userMessage" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<!-- Chatbot Icon and Chat Window End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p class="m-0 text-white">&copy; <a href="#">EcoRent</a>. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    // Ensure chat buttons are functioning properly
+    document.querySelectorAll('.btn-primary').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = this.getAttribute('href');
+        });
+    });
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const userMessage = document.getElementById('userMessage').value;
+        const chatBody = document.getElementById('chatBody');
+
+        if (userMessage.trim()) {
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'user-message';
+            userMsgDiv.innerText = userMessage;
+            chatBody.appendChild(userMsgDiv);
+
+            // Clear the input
+            document.getElementById('userMessage').value = '';
+
+            // Simulate AI response (replace this with real AI logic if available)
+            setTimeout(() => {
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'bot-message';
+                botMsgDiv.innerText = 'EcoRent бот: Спасибо за ваше сообщение!';
+                chatBody.appendChild(botMsgDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

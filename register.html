@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration - EcoRent</title>
+    <link href="ecorent.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light py-3 px-lg-5">
+    <a href="index.html" class="navbar-brand">
+        <h1 class="m-0 text-primary"><span class="text-dark">EcoRent</span></h1>
+    </a>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav m-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="login.html" class="nav-item nav-link">Login</a>
+            <a href="register.html" class="nav-item nav-link active">Register</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Register Form Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Create Your Account</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telegram">Telegram Username</label>
+                        <input type="text" class="form-control" id="telegram" placeholder="Enter your Telegram username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register Form End -->
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="container text-center">
+        <p class="m-0">&copy; <a href="#" class="text-light">EcoRent</a>. All Rights Reserved.</p>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS for registration -->
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        e.preventDefault();  // Prevent default form submission
+
+        // Get values from the form
+        var username = document.getElementById('username').value;
+        var email = document.getElementById('email').value;
+        var telegram = document.getElementById('telegram').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        // Send data to server
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                email: email,
+                telegram: telegram,
+                password: password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Debugging - Log the response to check if everything is correct
+                if (data.message === 'User registered successfully!') {
+                    alert('Registration successful!');
+                    window.location.href = "login.html";  // Redirect to login page
+                } else {
+                    alert('Registration error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration error');
+            });
+    });
+</script>
+</body>
+</html>

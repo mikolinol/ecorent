@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login - EcoRent</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="ecorent.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light py-3 px-lg-5">
+    <a href="index.html" class="navbar-brand">
+        <h1 class="m-0 text-primary"><span class="text-dark">EcoRent</span></h1>
+    </a>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav m-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="menu.html" class="nav-item nav-link">Menu</a>
+            <a href="login.html" class="nav-item nav-link active">Login</a>
+            <a href="my_account.html" class="nav-item nav-link">My Account</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Login Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Login to Your Account</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="rememberMe">
+                            <label class="custom-control-label" for="rememberMe">Remember Me</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Don't have an account? <a href="register.html">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login End -->
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="container text-center">
+        <p class="m-0">&copy; <a href="#" class="text-light">EcoRent</a>. All Rights Reserved.</p>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+
+<!-- JavaScript для страницы входа -->
+<script>
+    document.getElementById('login-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Retrieve user information from localStorage
+        const user = JSON.parse(localStorage.getItem(email));
+
+        // Check if user exists and password matches
+        if (user && user.password === password) {
+            // Save login status to localStorage
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('email', email); // Save email
+
+            // Remember login if checkbox is checked
+            if (document.getElementById('rememberMe').checked) {
+                localStorage.setItem('rememberMe', 'true');
+            } else {
+                localStorage.removeItem('rememberMe'); // Clear rememberMe if unchecked
+            }
+
+            alert('Login successful!');
+            window.location.href = 'my_account.html'; // Redirect to My Account page
+        } else {
+            alert('Invalid email or password. Please try again.');
+        }
+    });
+
+</script>
+
+</body>
+
+</html>

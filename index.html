@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    body {
+        background-color: #FAF7F0 !important;
+    }
+    .navbar-nav .nav-link:hover {
+        color: #8DECB4 !important; /* Замените на нужный цвет */
+    }
+    .navbar-nav .nav-link.active {
+        color: #059212 !important; /* Цвет активной ссылки */
+    }
+    .btn-primary {
+        background-color: #55AD9B !important;
+        border-color:  #55AD9B !important;
+    }
+    .btn-primary:hover {
+        background-color: #2C7865 !important;
+        border-color:  #2C7865 !important;
+    }
+    .bg-jumbotron {
+        background-image: none !important; /* Удаляем текущее изображение */
+        background-color: #f8f9fa; /* Цвет фона */
+        background: url('./img/ecorent.jpg') no-repeat center 1% !important; /* Выравнивание изображения */
+        background-size: cover !important; /* Чтобы изображение занимало весь блок */
+        height: 360px; /* Устанавливаем фиксированную высоту блока */
+    }
+    .custom-img {
+        position: relative; /* Относительное позиционирование */
+        left: -50%; /* Сдвиг влево на 50% от его ширины */
+        transform: scale(2.2); /* Увеличение изображения в 5.5 раз */
+        max-width: none; /* Убираем ограничение по ширине */
+        height: auto; /* Высота автоматически */
+        margin-left:250px;
+    }
+    .d-inline-block {
+        background-color: #D8EFD3; /* Цвет фона */
+        color: #55AD9B !important;
+    }
+    .custom-heading {
+        width: 90%;
+        text-align: center;
+        font-size: 2.1 rem;
+        margin-top: 120px;
+        line-height: 1.2;
+        display: block;
+        margin: 0 auto; /* Центрирование текста */
+    }
+    .bg-green-overlay {
+        background-color: rgba(0, 128, 0, 0.5); /* Semi-transparent green */
+    }
+    .team {
+        width: 240px; /* Ширина блока */
+        height: 160px; /* Высота блока */
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin: 0 auto; /* Центрирование блока */
+    }
+
+    .team img {
+        width: 100%; /* Изображение заполняет блок */
+        height: auto; /* Сохранять пропорции изображения */
+    }
+
+    .team-text {
+        padding: 10px; /* Отступы для текста */
+        font-size: 14px; /* Размер шрифта для текста */
+    }
+
+    .team-social {
+        padding: 5px;
+    }
+
+    .btn-square {
+        width: 24px; /* Размер кнопки */
+        height: 24px;
+        border-radius: 50%; /* Кнопка в форме круга */
+    }
+    .carousel-item.position-relative img {
+        position: relative;
+        z-index: 1; /* Ensures carousel images are below the chatbot */
+    }
+    /* Chat icon style */
+    .chat-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #4DAE88;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 1000; /* Ensures chatbot icon is above all other content */
+    }
+
+    .chat-icon:hover {
+        background-color: #2C7865;
+    }
+
+    /* Chat window style */
+    .chat-window {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+        flex-direction: column;
+        z-index: 1000; /* Ensures chatbot window is above all other content */
+    }
+    .chat-header {
+        background-color: #4DAE88;
+        color: white;
+        padding: 10px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .chat-body {
+        padding: 10px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .chat-footer {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-footer input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .chat-footer button {
+        margin-left: 10px;
+        padding: 8px;
+        background-color: #4DAE88;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .chat-footer button:hover {
+        background-color: #2C7865;
+    }
+    .user-message {
+        text-align: right;
+        background-color: #e0ffe6;
+        padding: 8px;
+        border-radius: 5px;
+        margin: 5px 0;
+    }
+
+    .bot-message {
+        text-align: left;
+        background-color: #f0f0f0;
+        padding: 8px;
+        border-radius: 5px;
+        margin: 5px 0;
+    }
+
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <title>EcoRent</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="website" name="keywords">
+    <meta content="website" name="description">
+
+    <!-- Favicon -->
+    <link href="ecorent.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid d-none d-lg-block" style="background-color: #D8EFD3">
+        <div class="row py-2 px-lg-5">
+            <div class="col-lg-6 text-left mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center">
+                    <small><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</small>
+                    <small class="px-3">|</small>
+                    <small><i class="fa fa-envelope mr-2"></i>info@example.com</small>
+                </div>
+            </div>
+            <div class="col-lg-6 text-right">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-primary px-2" href="">
+                        <i class="fab fa-facebook-f" style="color: #55AD9B"></i>
+                    </a>
+                    <a class="text-primary px-2" href="">
+                        <i class="fab fa-twitter" style="color: #55AD9B"></i>
+                    </a>
+                    <a class="text-primary px-2" href="">
+                        <i class="fab fa-linkedin-in" style="color: #55AD9B"></i>
+                    </a>
+                    <a class="text-primary px-2" href="">
+                        <i class="fab fa-instagram" style="color: #55AD9B"></i>
+                    </a>
+                    <a class="text-primary pl-2" href="">
+                        <i class="fab fa-youtube" style="color: #55AD9B"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg  navbar-light py-3 py-lg-0 px-lg-5" style="background-color:#FAF7F0">
+            <a href="index.html" class="navbar-brand ml-lg-3">
+                <h1 class="m-0 text-primary"><span class="text-dark">EcoRent</span></h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav m-auto py-0">
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="about.html" class="nav-item nav-link ">About</a>
+                    <a href="menu.html" class="nav-item nav-link">Menu</a>
+                    <a href="my_account.html" class="nav-item nav-link">Account</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Profile Start -->
+    <a href="profile.html" class="profile-button">
+        <i class="fas fa-user"></i>
+    </a>
+    <!-- Profile End -->
+
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-5 pb-5">
+        <div id="header-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item position-relative active" style="min-height: 70vh;">
+                    <img class="position-absolute w-100 h-100" src="img/img1.jpeg" style="object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 500px;">
+                            <h6 class="text-white text-uppercase mb-3 animate__animated animate__fadeInDown" style="letter-spacing: 3px;">EcoRent</h6>
+                            <h3 class="display-3 text-capitalize text-white mb-3">Reuse</h3>
+                            <p class="mx-md-5 px-5">You can rent anything</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item position-relative" style="min-height: 70vh;">
+                    <img class="position-absolute w-100 h-100" src="img/carusel1.jpeg" style="object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 500px;">
+                            <h6 class="text-white text-uppercase mb-3 animate__animated animate__fadeInDown" style="letter-spacing: 3px;">BeautyHive</h6>
+                            <h3 class="display-3 text-capitalize text-white mb-3">Reuse</h3>
+                            <p class="mx-md-5 px-5">Rent out</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item position-relative" style="min-height: 70vh;">
+                    <img class="position-absolute w-100 h-100" src="img/img3.jpeg" style="object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 500px;">
+                            <h6 class="text-white text-uppercase mb-3 animate__animated animate__fadeInDown" style="letter-spacing: 3px;">BeautyHive</h6>
+                            <h3 class="display-3 text-capitalize text-white mb-3">Reuse</h3>
+                            <p class="mx-md-5 px-5">You can help save the environment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <span id="control1" class="indicator"></span>
+                <span id="control2" class="indicator active" style="background-color: #2C7865;"></span>
+                <span id="control3" class="indicator"></span>
+            </div>
+        </div>
+    <!-- Carousel End -->
+
+        <!-- Chatbot Icon and Chat Window Start -->
+        <div class="chat-icon" onclick="toggleChat()">
+            <i class="fas fa-comment"></i>
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span>EcoRent Chatbot</span>
+                <button onclick="toggleChat()">X</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="userMessage" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <!-- Chatbot Icon and Chat Window End -->
+
+
+        <!-- Footer Start -->
+    <div class="footer container-fluid position-relative bg-dark py-5" style="margin-top: 90px;">
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-lg-6 pr-lg-5 mb-5">
+                    <a href="index.html" class="navbar-brand">
+                        <h1 class="mb-3 text-white"><span class="text-primary"></span>EcoRent</h1>
+                    </a>
+                    <p>We create style for the way you look and the way you live.</p>
+                    <p><i class="fa fa-map-marker-alt mr-2"></i>Location, City, Country</p>
+                    <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                    <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                    <div class="d-flex justify-content-start mt-4">
+                        <a class="btn btn-lg btn-custom btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-lg btn-custom btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-lg btn-custom btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-lg btn-custom btn-lg-square" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+
+                </div>
+                <div class="col-lg-6 pl-lg-5">
+                    <div class="row">
+                        <div class="col-sm-12 mb-5">
+                            <h5 class="text-white text-uppercase mb-4">Newsletter</h5>
+                            <div class="w-100">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Your Email Address">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary px-4">Sign Up</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark text-light border-top py-4" style="border-color: rgba(256, 256, 256, .15) !important;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
+                    <p class="m-0 text-white">&copy; <a href="#">EcoRent</a>. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-right">
+                    <p class="m-0 text-white">Designed by <a href="https://freewebsitecode.com">EcoRent</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+<script>
+    const carousel = $('#header-carousel');
+    const control1 = document.getElementById('control1');
+    const control2 = document.getElementById('control2');
+    const control3 = document.getElementById('control3');
+
+    // Event listeners for controls
+    control1.onclick = function () {
+        carousel.carousel(0); // Move to the first slide
+        setActiveControl(control1, control2, control3);
+    };
+
+    control2.onclick = function () {
+        carousel.carousel(1); // Move to the second slide
+        setActiveControl(control2, control1, control3);
+    };
+
+    control3.onclick = function () {
+        carousel.carousel(2); // Move to the third slide
+        setActiveControl(control3, control1, control2);
+    };
+
+    // Function to set active control and change color
+    function setActiveControl(active, ...others) {
+        // Change active control color
+        active.style.backgroundColor = "#2C7865"; // Active color
+        active.classList.add("active");
+
+        // Reset others to default color
+        others.forEach(control => {
+            control.style.backgroundColor = "#8DECB4"; // Default color
+            control.classList.remove("active");
+        });
+    }
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const userMessage = document.getElementById('userMessage').value;
+        const chatBody = document.getElementById('chatBody');
+
+        if (userMessage.trim()) {
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'user-message';
+            userMsgDiv.innerText = userMessage;
+            chatBody.appendChild(userMsgDiv);
+
+            // Clear the input
+            document.getElementById('userMessage').value = '';
+
+            // Simulate AI response (replace this with real AI logic if available)
+            setTimeout(() => {
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'bot-message';
+                botMsgDiv.innerText = 'EcoRent бот: Спасибо за ваше сообщение!';
+                chatBody.appendChild(botMsgDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const userMessage = document.getElementById('userMessage').value;
+        const chatBody = document.getElementById('chatBody');
+
+        if (userMessage.trim()) {
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'user-message';
+            userMsgDiv.innerText = userMessage;
+            chatBody.appendChild(userMsgDiv);
+
+            // Clear the input
+            document.getElementById('userMessage').value = '';
+
+            // Simulate AI response (replace this with real AI logic if available)
+            setTimeout(() => {
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'bot-message';
+                botMsgDiv.innerText = 'EcoRent бот: Спасибо за ваше сообщение!';
+                chatBody.appendChild(botMsgDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+
+</script>
+</body>
+</html>
